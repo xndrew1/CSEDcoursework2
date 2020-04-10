@@ -14,7 +14,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    @Override
+    @SuppressWarnings("unused")
+	@Override
     public void start(Stage primaryStage) {
         //IMPORT THESE FROM THE DATABASE (These also need to be re-imported when the pages change)
         String[] choices = {"Pizza","Cheese Burger","Fries"}; // Food you have had before that you can easily add again
@@ -25,8 +26,30 @@ public class Main extends Application {
         int targetCaloriesForDay = 2000;
         //IMPORT THESE FROM THE DATABASE
 
-        //Set the title of the main page
-        primaryStage.setTitle("Calorie tracker");
+        //Set the title to log in
+        primaryStage.setTitle("Log in");
+        
+        //Log in page
+        Label usernameLabel = new Label("Enter Username: ");
+        usernameLabel.setWrapText(true);
+        TextField usernameTF = new TextField();
+        Label passwordLabel = new Label("Enter Password ");
+        passwordLabel.setWrapText(true);
+        TextField passwordTF = new TextField();
+        Button button0 = new Button("Submit");
+        Button createAccountButton = new Button("Create Account");
+        
+        //Create account page
+        Label createUsername = new Label("Enter Username: "); 
+        createUsername.setWrapText(true);
+        TextField createUsernameTf = new TextField();
+        Label createPassword = new Label("Enter Password ");
+        createPassword.setWrapText(true);
+        TextField createPasswordTf = new TextField();
+        Label confirmPassword = new Label("Confirm Password ");
+        confirmPassword.setWrapText(true);
+        TextField confirmPasswordTf = new TextField();
+        Button finaliseCreate = new Button("Submit");
 
         //menu page
         Button button1 = new Button("Add a new meal");
@@ -39,6 +62,7 @@ public class Main extends Application {
         button4.setWrapText(true);
         Button exitButton = new Button("Exit");
         Button settingsButton = new Button("settings");
+        Button logOut = new Button("Log Out");
 
         //add meal page
         Button button5 = new Button("go back");
@@ -146,8 +170,19 @@ public class Main extends Application {
         Label sliderCalorieLabel = new Label(String.valueOf(targetCaloriesForDay));
         Label infoCalorieLabel = new Label("Please input your daily calorie target");
 
-
-
+        //Log in gridPane
+        GridPane gridPane0 = new GridPane();
+        gridPane0.add(usernameLabel, 0, 0, 1, 1);
+        gridPane0.add(usernameTF,1,0,2,1);
+        gridPane0.add(passwordLabel, 0, 1, 1, 1);
+        gridPane0.add(passwordTF,1,1,2,1);	
+        gridPane0.add(button0, 0, 3, 1, 1);
+        gridPane0.add(createAccountButton, 0, 4, 1, 1);
+        //Log in scene
+        Scene logIn = new Scene(gridPane0, 300, 400);
+        primaryStage.setScene(logIn);
+        primaryStage.show();
+        
         //menu gridPane
         GridPane gridPane1 = new GridPane();
         gridPane1.add(button1, 0,0,1,1);
@@ -155,15 +190,13 @@ public class Main extends Application {
         gridPane1.add(button3, 0,2,1,1);
         gridPane1.add(button4, 0,3,1,1);
         gridPane1.add(settingsButton, 0,4,1,1);
-        gridPane1.add(exitButton, 0,5,1,1);
+        gridPane1.add(logOut, 0, 5, 1, 1);
+        gridPane1.add(exitButton, 0,6,1,1);
         gridPane1.setHgap(10);
         gridPane1.setVgap(10);
         gridPane1.getColumnConstraints().add(new ColumnConstraints(100));
         //Menu scene
         Scene menuScene = new Scene(gridPane1, 300,400);
-        primaryStage.setScene(menuScene);
-        //Show primary stage (the main stage for everything)
-        primaryStage.show();
 
         //addMeal gridPane
         GridPane gridPane2 = new GridPane();
@@ -217,6 +250,18 @@ public class Main extends Application {
         gridPane6.add(backButton,0,10,1,1);
         gridPane6.add(sliderCalorieLabel,2,1,1,1);
         gridPane6.add(infoCalorieLabel,0,0,2,1);
+        
+        //Create Account gridPane
+        GridPane gridPane7 = new GridPane();
+        gridPane7.add(createUsername, 1, 1, 1, 1);
+        gridPane7.add(createUsernameTf, 2, 2, 1, 1);
+        gridPane7.add(createPassword, 1, 3, 1, 1);
+        gridPane7.add(createPasswordTf, 2, 4, 1, 1);
+        gridPane7.add(confirmPassword, 1, 5, 1, 1);
+        gridPane7.add(confirmPasswordTf, 2, 6, 1, 1);
+        gridPane7.add(finaliseCreate, 1, 7, 1, 1);
+        Scene createAccount = new Scene(gridPane7, 300, 400);
+
 
         ColumnConstraints col20 = new ColumnConstraints();
         col20.setPercentWidth(20);
@@ -227,6 +272,53 @@ public class Main extends Application {
 
 
         //BUTTON CODE
+        
+        //LogIn --> Menu
+        button0.setOnAction(actionEvent ->{
+        	String usernameString = usernameTF.getText();
+        	//Search for user name in database
+        	if(true){
+        		String passwordString = passwordTF.getText();
+        		//Search for password in database
+        		if(true){
+                	primaryStage.setTitle("Calorie Tracker");
+                	primaryStage.setScene(menuScene);
+        		}else{
+        			System.out.println("Incorrect password.");
+        		}
+        		
+        	}else{
+        		System.out.println("This user doesn't exist.");
+        	}
+        });
+        
+        //Log In --> Create Account
+        createAccountButton.setOnAction(actionEvent ->{
+        	primaryStage.setTitle("Create Account");
+        	primaryStage.setScene(createAccount);
+        });
+        
+        
+        //Create Account --> Log In
+        finaliseCreate.setOnAction(actionEvent ->{
+        	String newUsername = createUsernameTf.getText();
+        	String newPassword = createPasswordTf.getText();
+        	String checkPassword = confirmPasswordTf.getText();
+        	if (newPassword.equals(checkPassword)){
+        		//Create new account in database
+        	}else{
+        		System.out.println("Passwords don't match");
+        	}
+        	primaryStage.setTitle("Log in");
+        	primaryStage.setScene(logIn);
+        });
+        
+        //Menu --> LogIn (logged out)
+        logOut.setOnAction(actionEvent ->{
+        	primaryStage.setTitle("Log In");
+        	primaryStage.setScene(logIn);
+        });
+        
         //Menu --> addMeal
         button1.setOnAction(actionEvent -> {
             primaryStage.setTitle("Add a new meal");
@@ -306,7 +398,12 @@ public class Main extends Application {
             System.out.println(foodName + " " + calorieValue + " " + foodDesc);
             try{
                 int value = Integer.valueOf(calorieValue);
-                //SEND NAME, VALUE AND DESC TO THE DATABASE
+                if (value > 0){
+                    //SEND NAME, VALUE AND DESC TO THE DATABASE
+                }
+                else{
+                	System.out.println("not a valid number");
+                }
             }catch(NumberFormatException e){
                 System.out.println("not a valid number");
             }
