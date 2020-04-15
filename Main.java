@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @SuppressWarnings("unused")
-	@Override
+    @Override
     public void start(Stage primaryStage) {
         //IMPORT THESE FROM THE DATABASE (These also need to be re-imported when the pages change)
         String[] choices = {"Pizza","Cheese Burger","Fries"}; // Food you have had before that you can easily add again
@@ -28,8 +28,9 @@ public class Main extends Application {
 
         //Set the title to log in
         primaryStage.setTitle("Log in");
-        
+
         //Log in page
+        authentication authorize = new authentication();
         Label usernameLabel = new Label("Enter Username: ");
         usernameLabel.setWrapText(true);
         TextField usernameTF = new TextField();
@@ -38,9 +39,9 @@ public class Main extends Application {
         TextField passwordTF = new TextField();
         Button button0 = new Button("Submit");
         Button createAccountButton = new Button("Create Account");
-        
+
         //Create account page
-        Label createUsername = new Label("Enter Username: "); 
+        Label createUsername = new Label("Enter Username: ");
         createUsername.setWrapText(true);
         TextField createUsernameTf = new TextField();
         Label createPassword = new Label("Enter Password ");
@@ -49,6 +50,7 @@ public class Main extends Application {
         Label confirmPassword = new Label("Confirm Password ");
         confirmPassword.setWrapText(true);
         TextField confirmPasswordTf = new TextField();
+        String confirmPass = confirmPasswordTf.getText();
         Button finaliseCreate = new Button("Submit");
 
         //menu page
@@ -175,14 +177,14 @@ public class Main extends Application {
         gridPane0.add(usernameLabel, 0, 0, 1, 1);
         gridPane0.add(usernameTF,1,0,2,1);
         gridPane0.add(passwordLabel, 0, 1, 1, 1);
-        gridPane0.add(passwordTF,1,1,2,1);	
+        gridPane0.add(passwordTF,1,1,2,1);
         gridPane0.add(button0, 0, 3, 1, 1);
         gridPane0.add(createAccountButton, 0, 4, 1, 1);
         //Log in scene
         Scene logIn = new Scene(gridPane0, 300, 400);
         primaryStage.setScene(logIn);
         primaryStage.show();
-        
+
         //menu gridPane
         GridPane gridPane1 = new GridPane();
         gridPane1.add(button1, 0,0,1,1);
@@ -250,7 +252,7 @@ public class Main extends Application {
         gridPane6.add(backButton,0,10,1,1);
         gridPane6.add(sliderCalorieLabel,2,1,1,1);
         gridPane6.add(infoCalorieLabel,0,0,2,1);
-        
+
         //Create Account gridPane
         GridPane gridPane7 = new GridPane();
         gridPane7.add(createUsername, 1, 1, 1, 1);
@@ -272,53 +274,49 @@ public class Main extends Application {
 
 
         //BUTTON CODE
-        
+
         //LogIn --> Menu
         button0.setOnAction(actionEvent ->{
-        	String usernameString = usernameTF.getText();
-        	//Search for user name in database
-        	if(true){
-        		String passwordString = passwordTF.getText();
-        		//Search for password in database
-        		if(true){
-                	primaryStage.setTitle("Calorie Tracker");
-                	primaryStage.setScene(menuScene);
-        		}else{
-        			System.out.println("Incorrect password.");
-        		}
-        		
-        	}else{
-        		System.out.println("This user doesn't exist.");
-        	}
+            String usernameString = usernameTF.getText();
+            String passwordString = passwordTF.getText();
+            boolean userExists = authorize.login(usernameString, passwordString);
+            //Search for user in database
+            if(userExists){
+                primaryStage.setTitle("Calorie Tracker");
+                primaryStage.setScene(menuScene);
+            }
+            else{
+                System.out.println("This user doesn't exist.");
+            }
         });
-        
+
         //Log In --> Create Account
         createAccountButton.setOnAction(actionEvent ->{
-        	primaryStage.setTitle("Create Account");
-        	primaryStage.setScene(createAccount);
+            primaryStage.setTitle("Create Account");
+            primaryStage.setScene(createAccount);
         });
-        
-        
+
+
         //Create Account --> Log In
         finaliseCreate.setOnAction(actionEvent ->{
-        	String newUsername = createUsernameTf.getText();
-        	String newPassword = createPasswordTf.getText();
-        	String checkPassword = confirmPasswordTf.getText();
-        	if (newPassword.equals(checkPassword)){
-        		//Create new account in database
-        	}else{
-        		System.out.println("Passwords don't match");
-        	}
-        	primaryStage.setTitle("Log in");
-        	primaryStage.setScene(logIn);
+            String newUsername = createUsernameTf.getText();
+            String newPassword = createPasswordTf.getText();
+            String checkPassword = confirmPasswordTf.getText();
+            if (newPassword.equals(checkPassword)){
+                authorize.createAccount();
+            }else{
+                System.out.println("Passwords don't match");
+            }
+            primaryStage.setTitle("Log in");
+            primaryStage.setScene(logIn);
         });
-        
+
         //Menu --> LogIn (logged out)
         logOut.setOnAction(actionEvent ->{
-        	primaryStage.setTitle("Log In");
-        	primaryStage.setScene(logIn);
+            primaryStage.setTitle("Log In");
+            primaryStage.setScene(logIn);
         });
-        
+
         //Menu --> addMeal
         button1.setOnAction(actionEvent -> {
             primaryStage.setTitle("Add a new meal");
@@ -402,7 +400,7 @@ public class Main extends Application {
                     //SEND NAME, VALUE AND DESC TO THE DATABASE
                 }
                 else{
-                	System.out.println("not a valid number");
+                    System.out.println("not a valid number");
                 }
             }catch(NumberFormatException e){
                 System.out.println("not a valid number");
