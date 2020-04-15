@@ -93,7 +93,7 @@ public class authentication{
         return passwordValid;
     }
  
-    public void login(){
+    public void login(String username, String password){
         if (checkUsernameExists(username)){
             sql = "SELECT PassHash FROM User WHERE UserName = '" + username + "'";
             ArrayList<String[]> dbPasswords = sqlDatabase.getFromDatabase(sql);
