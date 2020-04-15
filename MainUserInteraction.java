@@ -385,13 +385,7 @@ public class MainUserInteraction extends Application {
             String newPassword = createPasswordTf.getText();
             String checkPassword = confirmPasswordTf.getText();
             if (newPassword.equals(checkPassword)){
-
-                //ADD A NEW PASSWORD INTO THE DATABASE
-
-                //INSERT INTO Users (UserName,PassHash)
-                //VALUES(newUserName,newPassword);
-                //Where new password needs to be hashed
-
+                authorize.createAccount();
             }else{
                 System.out.println("Passwords don't match");
             }
