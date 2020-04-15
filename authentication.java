@@ -1,3 +1,4 @@
+package sample;
 import java.util.ArrayList;
 
 public class authentication{
@@ -93,7 +94,7 @@ public class authentication{
         return passwordValid;
     }
  
-    public void login(String username, String password){
+    public boolean login(String username, String password){
         if (checkUsernameExists(username)){
             sql = "SELECT PassHash FROM User WHERE UserName = '" + username + "'";
             ArrayList<String[]> dbPasswords = sqlDatabase.getFromDatabase(sql);
@@ -103,12 +104,14 @@ public class authentication{
 
             if (plainPass.equals(password)){
                 System.out.println("Password is correct.");
+                return true;
                 //login works
             }
             else{
                 System.out.println("Password is incorrect.");
+                return false;
                 //login fails
             }            
         }
+        return false;
     }
-}
